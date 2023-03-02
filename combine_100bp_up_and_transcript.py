@@ -4,7 +4,7 @@ from Bio.SeqRecord import SeqRecord
 import pandas as pd
 import pathlib
 
-id_to_name = pd.read_csv("top_probe_models.csv")
+id_to_name = pd.read_csv("/projectnb/bradham/workflows/lvar3-0_extraction/top_probe_models.csv")
 id_to_name.seq_id = id_to_name.seq_id.str.replace("(-RA$)", "", regex=True)
 id_to_name = id_to_name.set_index("seq_id").to_dict()["name"]
 offset_regex = re.compile("(?<=offset\:)[0-9]+(?!' ')")
@@ -35,7 +35,9 @@ def mark_stop(seq):
 
 outdir = pathlib.Path("output")
 new_sequences = [None] * len(transcripts)
+#print(transcripts.keys())
 for i, seq_id in enumerate(transcripts.keys()):
+    #print(seq_id)
     print(id_to_name[seq_id])
     offset = find_offset(transcripts[seq_id].description)
     if offset < 100:
